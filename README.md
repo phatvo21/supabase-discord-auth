@@ -1,0 +1,2 @@
+# Supabase Discord Auth
+

@@ -1,0 +1,17 @@
+# Docker compose files used for testing in container
+version: '3'
+
+services:
+  supabase-discord-auth:
+    image: supabase-discord-auth
+    container_name: supabase-discord-auth
+    build:
+      context: .
+    # override the command to run the test functions
+#    command: ['run', 'test:ci']
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${PORT}
+    ports:
+      - ${PORT}:${PORT}
+
