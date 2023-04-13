@@ -7,11 +7,19 @@ services:
     container_name: supabase-discord-auth
     build:
       context: .
+      dockerfile: ./Dockerfile
     # override the command to run the test functions
 #    command: ['run', 'test:ci']
+    restart: unless-stopped
     environment:
       NODE_ENV: ${NODE_ENV}
       PORT: ${PORT}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+      SUPABASE_SERVICE_URL: ${SUPABASE_SERVICE_URL}
     ports:
-      - ${PORT}:${PORT}
+      - "${PORT}:${PORT}"
+    networks:
+      - auth
 
+networks:
+  auth:

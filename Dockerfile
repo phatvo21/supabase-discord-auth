@@ -21,4 +21,6 @@ COPY --from=build /supabase-discord-auth/dist ./dist
 
 RUN npm prune --production
 
+EXPOSE 1000
+
 CMD ["node", "--enable-source-maps", "-r" , "./dist/index.js"]

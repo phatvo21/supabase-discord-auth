@@ -2,7 +2,7 @@
   "name": "supabase-discord-auth",
   "version": "1.0.0",
   "description": "Service serves the Discord authentication and authorization",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run build && nodemon -e js,yaml -r @babel/register -r ./env/config.js ./dist/index.js",
@@ -25,6 +25,8 @@
     "@fastify/cors": "^7.0.0",
     "@fastify/formbody": "^6.0.0",
     "@fastify/helmet": "^8.0.0",
+    "@supabase/supabase-js": "^2.20.0",
+    "axios": "^1.3.5",
     "fastify": "^3.28.0",
     "fastify-helmet": "^7.1.0",
     "fastify-plugin": "^4.5.0",
