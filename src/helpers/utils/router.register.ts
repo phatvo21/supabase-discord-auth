@@ -1,6 +1,7 @@
 import {FastifyInstance} from 'fastify';
-import postRouter from "../routes/post.router";
-import userRouter from "../routes/user.router";
+import postRouter from "routes/post.router";
+import userRouter from "routes/user.router";
+import identityProviderStartRouter from "routes/identity-provider-start.router";
 
 const mainPrefix: string = 'api';
 
@@ -20,7 +21,8 @@ interface RouterRegister {
  */
 export const routers: Array<RouterRegister> = [
   {routerName: postRouter, prefix: `${mainPrefix}/posts`},
-  {routerName: userRouter, prefix: `${mainPrefix}/users`}
+  {routerName: userRouter, prefix: `${mainPrefix}/users`},
+  {routerName: identityProviderStartRouter, prefix: `${mainPrefix}/identity-provider`}
 ];
 
 /**

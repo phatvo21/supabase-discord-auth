@@ -3,15 +3,11 @@ import formBodyPlugin from '@fastify/formbody';
 import fastifyHelmet from '@fastify/helmet';
 import fastify, {FastifyError, FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import pino from 'pino';
-import {routerRegister} from './helpers/router.register';
-import {createClient, SupabaseClient} from '@supabase/supabase-js';
-import {DiscordAuth} from './services/DiscordAuth/discord.auth';
+import {routerRegister} from 'helpers';
+import * as console from 'console';
 
 // Port, which is the exposed port application running
 const port: number | string = process.env.PORT ?? 5000;
-// Start Supabase client
-const supabaseUrl = process.env.SUPABASE_SERVICE_URL ?? "";
-const supabaseKey = process.env.SUPABASE_ANON_KEY ?? "";
 
 const startServer = async (): Promise<void> => {
   try {
@@ -29,11 +25,8 @@ const startServer = async (): Promise<void> => {
 
     // Error handlers
     server.setErrorHandler((error: FastifyError): void => {
+      console.log("HELLO THERE??");
       server.log.error(error);
-    });
-
-    server.get('/', (request: FastifyRequest, reply: FastifyReply): void => {
-      reply.send({name: 'fastify-typescript'});
     });
 
     // Health check, which is the endpoint to check application status
@@ -64,14 +57,6 @@ const startServer = async (): Promise<void> => {
 
     // Start listening the server
     await server.listen(port);
-    // const supabase: SupabaseClient = createClient(supabaseUrl, supabaseKey);
-    // const { data, error } = await supabase.auth.signInWithOAuth({
-    //   provider: 'discord',
-    // })
-    // console.log(data);
-
-    const token = await DiscordAuth.obtainToken("sLyrpxUsR9qqF2qauo98Bk66jkavb9");
-    console.log(token);
   } catch (e) {
     console.error(e);
   }
