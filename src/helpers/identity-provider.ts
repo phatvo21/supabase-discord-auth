@@ -1,17 +1,23 @@
+/** List supported provider */
 export interface IdentityProvider {
-  discord: ProviderInfo
+  /** Discord provider */
+  discord: ProviderInfo;
+  /** Google provider */
+  google: ProviderInfo;
 }
 
+/** The info contains list allows user grant the permission from provider */
 export interface ProviderInfo {
-  scopes: string
+  /** List scopes supported from provider */
+  scopes: string;
 }
 
 /**
  * List supported identity providers
  */
-export const identityProvider: any = {
-  discord: {scopes: "identify email"}
-}
+export const identityProvider: IdentityProvider = {
+  discord: {scopes: 'identify email'},
+  google: {scopes: 'identify email'},
+};
 
-
-export const IdentityProviderEnum: string[] = ["discord"]
+export type IdentityProviderType = 'discord' | 'google';

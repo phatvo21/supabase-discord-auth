@@ -1,13 +1,15 @@
+import * as console from 'console';
 import fastifyCors from '@fastify/cors';
 import formBodyPlugin from '@fastify/formbody';
 import fastifyHelmet from '@fastify/helmet';
-import fastify, {FastifyError, FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
+import {fastifySwagger} from '@fastify/swagger';
+import fastify, {FastifyInstance, FastifyReply, FastifyRequest} from 'fastify';
 import pino from 'pino';
-import {routerRegister} from 'helpers';
-import * as console from 'console';
+import {globalErrorHandler, routerRegister} from 'helpers';
 
 // Port, which is the exposed port application running
 const port: number | string = process.env.PORT ?? 5000;
+const appHostName = process.env.APP_HOST_NAME ?? 'localhost:4001';
 
 const startServer = async (): Promise<void> => {
   try {
@@ -17,17 +19,52 @@ const startServer = async (): Promise<void> => {
     });
     // Main plugins register
     server.register(formBodyPlugin);
-    server.register(fastifyCors);
-    server.register(fastifyHelmet);
+    server.register(fastifyHelmet, {
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: [`'self'`],
+          styleSrc: [`'self'`, `'unsafe-inline'`],
+          imgSrc: [`'self'`, 'data:', 'validator.swagger.io'],
+          scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
+        },
+      },
+    });
+    server.register(fastifyCors, {
+      origin: '*',
+      methods: 'GET,PUT,POST,DELETE,OPTIONS',
+      allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
+    });
+
+    // Swagger configuration
+    server.register(fastifySwagger, {
+      routePrefix: '/docs',
+      swagger: {
+        info: {
+          title: 'API Document',
+          description: 'The list of API docs serves in the application',
+          version: '0.1.0',
+        },
+        externalDocs: {
+          url: 'https://swagger.io',
+          description: 'Get more info here',
+        },
+        host: `${appHostName}`,
+        schemes: ['http'],
+        consumes: ['application/json'],
+        produces: ['application/json'],
+      },
+      uiConfig: {
+        docExpansion: 'full',
+        deepLinking: false,
+      },
+      exposeRoute: true,
+    });
 
     // Register all the routers
     routerRegister(server);
 
     // Error handlers
-    server.setErrorHandler((error: FastifyError): void => {
-      console.log("HELLO THERE??");
-      server.log.error(error);
-    });
+    globalErrorHandler(server);
 
     // Health check, which is the endpoint to check application status
     server.get(
@@ -57,6 +94,8 @@ const startServer = async (): Promise<void> => {
 
     // Start listening the server
     await server.listen(port);
+    await server.ready();
+    server.swagger();
   } catch (e) {
     console.error(e);
   }

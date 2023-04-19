@@ -65,6 +65,8 @@
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/no-unsafe-argument": "off",
     "import/no-named-as-default": "off",
+    "@typescript-eslint/require-await": "off",
+    "@typescript-eslint/no-unnecessary-type-assertion": "off"
   },
   "settings": {
     "import/resolver": {

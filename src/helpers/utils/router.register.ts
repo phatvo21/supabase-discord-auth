@@ -1,9 +1,8 @@
 import {FastifyInstance} from 'fastify';
-import postRouter from "routes/post.router";
-import userRouter from "routes/user.router";
-import identityProviderStartRouter from "routes/identity-provider-start.router";
+import getUserRouter from 'routes/get-user.router';
+import identityProviderStartRouter from 'routes/identity-provider-start.router';
 
-const mainPrefix: string = 'api';
+const mainPrefix = 'api';
 
 /**
  * Indicates that the router and prefix need to be registered
@@ -20,9 +19,8 @@ interface RouterRegister {
  * @return {Array<RouterRegister>} - Indicates the list of router's name and prefix
  */
 export const routers: Array<RouterRegister> = [
-  {routerName: postRouter, prefix: `${mainPrefix}/posts`},
-  {routerName: userRouter, prefix: `${mainPrefix}/users`},
-  {routerName: identityProviderStartRouter, prefix: `${mainPrefix}/identity-provider`}
+  {routerName: identityProviderStartRouter, prefix: `${mainPrefix}/identity-provider`},
+  {routerName: getUserRouter, prefix: `${mainPrefix}/users`},
 ];
 
 /**

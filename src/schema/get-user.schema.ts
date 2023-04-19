@@ -1,11 +1,20 @@
 import S from 'fluent-json-schema';
 
-export const identityProviderStartSchema = {
-  querystring: S.object().prop('provider', S.enum(['discord', 'google']).required()),
+export const getUserSchema = {
+  headers: S.object().prop('authorization', S.string().required()),
   response: {
-    400: {
+    200: {
+      description: 'Success',
       type: 'object',
+      properties: {
+        id: {type: 'string'},
+        email: {type: 'string'},
+      },
+      example: {id: 'userId', email: 'user@example.com'},
+    },
+    400: {
       description: 'Bad Request',
+      type: 'object',
       properties: {
         statusCode: {type: 'number'},
         message: {type: 'string'},
@@ -25,9 +34,9 @@ export const identityProviderStartSchema = {
         message: 'BAD_REQUEST',
         data: [
           {
-            message: "query should have required property 'provider'",
+            message: "headers should have required property 'authorization'",
             params: {
-              missingProperty: 'provider',
+              missingProperty: 'authorization',
             },
           },
         ],
