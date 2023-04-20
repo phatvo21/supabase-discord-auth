@@ -42,6 +42,15 @@ export const getUserSchema = {
         ],
       },
     },
+    401: {
+      description: 'Unauthorized',
+      type: 'object',
+      properties: {
+        statusCode: {type: 'number'},
+        message: {type: 'string'},
+      },
+      example: {statusCode: 401, message: 'UNAUTHORIZED'},
+    },
     500: {
       description: 'Server Error',
       type: 'object',

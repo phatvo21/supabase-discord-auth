@@ -148,6 +148,14 @@ Endpoint allows to fetch user's information using their access token provided fr
 }
 ```
 
+401
+
+```jsonc
+{
+  "statusCode": 401,
+  "message": "UNAUTHORIZED"
+```
+
 500
 
 ```jsonc
